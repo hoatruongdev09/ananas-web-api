@@ -79,7 +79,7 @@ namespace Ananas.Services.PostgreServices {
             return shoeSize;
         }
 
-        public async Task<List<ShoeSizeModel>> GetList () {
+        public async Task<List<ShoeSizeModel>> GetListAll () {
             List<ShoeSizeModel> listSizes = new List<ShoeSizeModel> ();
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
@@ -166,13 +166,14 @@ namespace Ananas.Services.PostgreServices {
                                         Status = Convert.ToInt32 (reader["status"]),
                                         Image = Convert.ToString (reader["image"]),
                                         Gender = Convert.ToInt32 (reader["gender"]),
-                                        // Color = Convert.ToInt32 (reader["color"]),
-                                        // Category = Convert.ToInt32 (reader["category"]),
-                                        // Collection = Convert.ToInt32 (reader["collection"]),
-                                        // Form = Convert.ToInt32 (reader["form"]),
-                                        // Material = Convert.ToInt32 (reader["material"]),
-                                        // ShoeSize = Convert.ToInt32 (reader["shoe_size"]),
-                                        // Size = Convert.ToInt32 (reader["size"]),
+                                        Category = Convert.ToInt32 (reader["category"])
+                                    // Color = Convert.ToInt32 (reader["color"]),
+                                    // Category = Convert.ToInt32 (reader["category"]),
+                                    // Collection = Convert.ToInt32 (reader["collection"]),
+                                    // Form = Convert.ToInt32 (reader["form"]),
+                                    // Material = Convert.ToInt32 (reader["material"]),
+                                    // ShoeSize = Convert.ToInt32 (reader["shoe_size"]),
+                                    // Size = Convert.ToInt32 (reader["size"]),
                                 });
                             }
                         }
@@ -225,6 +226,10 @@ namespace Ananas.Services.PostgreServices {
                 await cn.CloseAsync ();
             }
             return rowAffect;
+        }
+
+        public Task<List<ShoeSizeModel>> GetList (int pageIndex = 0, int pageCount = 10) {
+            throw new NotImplementedException ();
         }
     }
 }

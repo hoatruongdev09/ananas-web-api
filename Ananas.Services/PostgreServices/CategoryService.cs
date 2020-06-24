@@ -40,7 +40,7 @@ namespace Ananas.Services.PostgreServices {
             return id;
         }
 
-        public async Task<List<CategoryModel>> GetList () {
+        public async Task<List<CategoryModel>> GetListAll () {
             List<CategoryModel> listCategory = new List<CategoryModel> ();
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
@@ -117,8 +117,8 @@ namespace Ananas.Services.PostgreServices {
             List<CategoryModel> categories = new List<CategoryModel> ();
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
-                string query = $@"SELECT * FROM {TableName} JOIN {productCategoryTable} ON {TableName}.id = {productCategoryTable}.id_category 
-                            WHERE {productCategoryTable}.id_product = @idProduct";
+                string query = $@"SELECT * FROM category JOIN product ON category.id = product.category 
+                            WHERE product.id = @idProduct";
                 using (var cmd = new NpgsqlCommand (query, cn)) {
                     cmd.Parameters.AddWithValue ("@idProduct", productID);
                     try {
@@ -141,11 +141,10 @@ namespace Ananas.Services.PostgreServices {
         }
         public async Task<List<ProductModel>> GetProductByCategoryID (int categoryID) {
             List<ProductModel> products = new List<ProductModel> ();
-            string tableProduct = "product";
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
-                string query = $@"SELECT * FROM {tableProduct} JOIN {productCategoryTable} ON {tableProduct}.id = {productCategoryTable}.id_product
-                            WHERE {productCategoryTable}.id_category = @idCategory";
+                string query = $@"SELECT * FROM category JOIN product ON category.id = product.category
+                            WHERE product.category = @idCategory";
                 using (var cmd = new NpgsqlCommand (query, cn)) {
                     cmd.Parameters.AddWithValue ("@idCategory", categoryID);
                     try {
@@ -162,13 +161,14 @@ namespace Ananas.Services.PostgreServices {
                                     Status = Convert.ToInt32 (reader["status"]),
                                     Image = Convert.ToString (reader["image"]),
                                     Gender = Convert.ToInt32 (reader["gender"]),
-                                    // Color = Convert.ToInt32 (reader["color"]),
-                                    // Category = Convert.ToInt32 (reader["category"]),
-                                    // Collection = Convert.ToInt32 (reader["collection"]),
-                                    // Form = Convert.ToInt32 (reader["form"]),
-                                    // Material = Convert.ToInt32 (reader["material"]),
-                                    // ShoeSize = Convert.ToInt32 (reader["shoe_size"]),
-                                    // Size = Convert.ToInt32 (reader["size"]),
+                                    Category = Convert.ToInt32 (reader["category"])
+                                // Color = Convert.ToInt32 (reader["color"]),
+                                // Category = Convert.ToInt32 (reader["category"]),
+                                // Collection = Convert.ToInt32 (reader["collection"]),
+                                // Form = Convert.ToInt32 (reader["form"]),
+                                // Material = Convert.ToInt32 (reader["material"]),
+                                // ShoeSize = Convert.ToInt32 (reader["shoe_size"]),
+                                // Size = Convert.ToInt32 (reader["size"]),
                             });
                         }
                         await reader.CloseAsync ();
@@ -221,6 +221,27 @@ namespace Ananas.Services.PostgreServices {
                 await cn.CloseAsync ();
             }
             return result;
+        }
+
+        public async Task<List<CategoryModel>> GetList (int pageIndex = 1, int pageCount = 10) {
+            List<CategoryModel> listCategory = new List<CategoryModel> ();
+            using (var cn = new NpgsqlConnection (ConnectionString)) {
+                await cn.OpenAsync ();
+                string query = $"SELECT * FROM {TableName} OFFSET {(pageIndex-1)*pageCount} LIMIT {pageCount}";
+                using (var cmd = new NpgsqlCommand (query, cn)) {
+                    var reader = await cmd.ExecuteReaderAsync ();
+                    while (await reader.ReadAsync ()) {
+                        listCategory.Add (new CategoryModel () {
+                            ID = Convert.ToInt32 (reader["id"]),
+                                Name = Convert.ToString (reader["name"]),
+                                Parent = Convert.ToInt32 (reader["parent"])
+                        });
+                    }
+                    await reader.CloseAsync ();
+                }
+                await cn.CloseAsync ();
+            }
+            return listCategory;
         }
     }
 }

@@ -10,57 +10,33 @@
         height: 64px;
         object-fit: cover;
     }
-    .model-dialog-lg{
+
+    .model-dialog-lg {
         max-width: 900px;
         margin: 1.75rem auto;
         position: relative;
         width: auto;
         pointer-events: none;
     }
+    .image-holder {
+        width: 100%;
+        display: block;
+    }
+    .image-figure{
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .color-square {
+        width: 25px;
+        height: 25px;
+    }
 </style>
-<script>
-    let data = null;
-    function loadColorData() {
-        return [
-            {id: 1, color:"white"},
-            {id: 2, color:"white"},
-            {id: 2, color:"white"}
-        ]
-    }
-    function loadCategoryData() {
-        return [
-            {id: 1: category: "giày"},
-            {id: 2: category: "nửa trên"},
-            {id: 3: category: "phụ kiện"},
-        ]
-    }
-    function loadBranchData() {
-        return [
-            {id: 1, branch: "Basas"},
-            {id: 2, branch: "Patas"},
-            {id: 3, branch: "Creas"},
-        ]
-    }
-    function onPrepareData() {
-        let color = loadColorData()
-        let category = loadCategoryData()
-        let branch = loadBranchData()
-        data = {
-            color : color,
-            category : category,
-            branch : branch
-        }
-    }
-    function openCreateProductWindow() {
-        
-    }
-    window.onload = onPrepareData
-</script>
 <div class="container-fluid">
-    <h1 class="mt-4">Danh sách sản phẩm</h1>
+    <h1 class="mt-4">@ViewData["Title"]</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/admin/index">Dashboard</a></li>
-        <li class="breadcrumb-item active"><a href="/admin/productlist">Danh sách sản phẩm</a></li>
+        <li class="breadcrumb-item active"><a href="/admin/productlist">@ViewData["Title"]</a></li>
     </ol>
     <div class="card mb-4">
         <div class="card-body">Danh sách cả sản phẩm hiện đang được bày bán.</div>
@@ -69,11 +45,11 @@
         <div class="card-header">
             <div style="display: inline-block; float: left; height: 100%;">
                 <div style="display: table-cell; vertical-align: middle;">
-                    <i class="fas fa-table mr-1"></i>Danh sách sản phẩm
+                    <i class="fas fa-table mr-1"></i>@ViewData["Title"]
                 </div>
             </div>
             <div style="display: inline-block; float: right;">
-                <Button class="btn btn-primary" onclick="openCreateProductWindow()">Thêm mới</Button>
+                <a href="/admin/createproduct" class="btn btn-primary" >Thêm mới</a>
             </div>
         </div>
         <div class="card-body">
@@ -89,9 +65,10 @@
                             <th></th>
                             <th></th>
                         </tr>
-                    </thead> 
+                    </thead>
                     <tbody>
-                        @foreach(var product in Model){
+                        @foreach (var product in Model)
+                        {
                             <tr>
                                 <td style="text-align: center;"><img class="product-image" src="@Url.Content($"~/images/Uploads/{product.Image}")" /></td>
                                 <td style="text-align: center; font-weight: bold;">@product.Name</td>
@@ -102,7 +79,7 @@
                                 <td style="text-align: center;"><Button class="btn btn-danger">Xóa</Button></td>
                             </tr>
                         }
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -141,185 +118,6 @@
                     </li>
                 </ul>
             </div>
-        </div>
-    </div>
-    <div class="modal fade bottom show" id="fullHeightModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" style="max-width: 1000px; min-width: 800px;" role="document"  aria-hidden="true">
-            <!--Content-->
-            <div class="modal-content">
-            <!--Header-->
-             <form>
-                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                   
-                    <div class="card-header">
-                        <h3 class="text-center font-weight-light my-4">Tạo mới sản phẩm</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputFirstName">Tên Sản Phẩm</label>
-                                    <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Mã Sản Phẩm</label>
-                                    <input class="form-control py-4" id="inputLastName" type="text" placeholder="Enter last name">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Giá Đề Xuất</label>
-                                    <input class="form-control py-4" id="inputLastName" type="text" placeholder="Enter last name">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputFirstName">Giới Tính</label>
-                                    <select class="form-control" id="sel1">
-                                        <option>Unisex</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Thương Hiệu</label>
-                                    <select class="form-control" id="sel1">
-                                        <option>Unisex</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Danh Mục</label>
-                                    <select class="form-control" id="sel1">
-                                        <option>Unisex</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Tình Trạng</label>
-                                    <select class="form-control" id="sel1">
-                                        <option>Unisex</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="form-row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputFirstName">Màu Sắc</label>
-                                    <select class="form-control" multiple size="3" id="sel1">
-                                        <option>Unisex</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Size</label>
-                                    <select class="form-control" multiple size="3" id="sel1">
-                                        <option>Unisex</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Bộ Sưu Tập</label>
-                                     <select class="form-control" multiple size="3" id="sel1">
-                                        <option>Unisex</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Form</label>
-                                     <select class="form-control" multiple size="3" id="sel1">
-                                        <option>Unisex</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Chất Liệu</label>
-                                     <select class="form-control" multiple size="3" id="sel1">
-                                        <option>Unisex</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputFirstName">Mô Tả Sản Phẩm</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputLastName">Chi Tiết Sản Phẩm</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputPassword">Ảnh Sản Phẩm</label>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label" for="customFile">Choose file</label>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="small mb-1" for="inputConfirmPassword">Ảnh Chi Tiết (Chọn 1 hoặc nhiều ảnh)</label>
-                                    <div class="custom-file">
-                                        <input type="file" multiple class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label" for="customFile">Choose file</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                </div>
-                <!--Footer-->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary waves-effect waves-light" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary waves-effect waves-light">Tạo mới</button>
-                </div>
-
-                </form>
-            </div>
-            <!--/.Content-->
         </div>
     </div>
 

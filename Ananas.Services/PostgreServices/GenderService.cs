@@ -77,7 +77,7 @@ namespace Ananas.Services.PostgreServices {
             return model;
         }
 
-        public async Task<List<GenderModel>> GetList () {
+        public async Task<List<GenderModel>> GetListAll () {
             List<GenderModel> listGenders = new List<GenderModel> ();
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
@@ -118,6 +118,10 @@ namespace Ananas.Services.PostgreServices {
                 await cn.CloseAsync ();
             }
             return rowAffect;
+        }
+
+        public Task<List<GenderModel>> GetList (int pageIndex = 0, int pageCount = 10) {
+            throw new NotImplementedException ();
         }
     }
 }

@@ -1,0 +1,120 @@
+.header {
+}
+.header .menu {
+  background-color: #303030;
+  text-align: right;
+  height: 30px;
+  width: 100%;
+  padding: 3px 60px 0px 0px;
+  overflow: hidden;
+}
+.header .menu li {
+  list-style: none;
+  position: relative;
+  margin-left: 10px;
+  display: inline-block;
+  text-shadow: 1px 2px rgba(255, 255, 255, 0.3);
+}
+.header .menu li a {
+  color: white;
+  font-size: smaller;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+  color: #e67e22;
+}
+.header .menu a:hover {
+  text-decoration: none;
+  color: #e67e22;
+}
+.header .menu li img {
+  margin-right: 10px;
+}
+.header .navbar {
+  height: 100px;
+  margin-top: 12px;
+  margin-bottom: 0px;
+  width: 100%;
+  text-align: center;
+}
+.header .navbar-brand {
+  padding: 0px 10px 0px 60px;
+  height: 100%;
+  overflow: hidden;
+}
+.header .navbar-brand img {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+}
+.center {
+  margin: auto;
+  padding: 10px;
+  width: 50%;
+}
+.header .navbar-nav {
+  text-align: center;
+}
+.header .navbar-nav li {
+  padding: 0px 0px 0px 5px;
+}
+.bolder {
+  color: black;
+  font-weight: bolder;
+  font-size: x-large;
+  text-transform: uppercase;
+}
+.header .line {
+  border-right: #e3e2e2 2px solid;
+  height: 50px;
+}
+.hot-news-cont {
+  background-color: #95a5a6;
+  display: block;
+  width: 100%;
+}
+.hot-news-cont .hot-news-slide {
+  height: 50px;
+}
+.hot-news-cont .hot-news-slide .carousel {
+  height: 100%;
+}
+.new-info-holder {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.new-info-content {
+  color: black;
+  font-weight: bold;
+  font-size: large;
+  text-transform: uppercase;
+}
+.sec-search {
+  text-align: center;
+}
+.footer {
+  background-color: #4c4c4c;
+  padding: 60px 0px 60px 0px;
+  overflow: hidden;
+}
+.footer .sec-search .row {
+  padding: 0px 0px 20px 0px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+.footer .sec-search img {
+  width: 75%;
+  height: auto;
+  object-fit: cover;
+}
+.btn-search-shop {
+  border-radius: 0px;
+  background-color: #f15e2c;
+  border: #f15e2c 1px solid;
+  color: #fff;
+  font-size: 18px;
+  height: 40px;
+  width: 60%;
+}

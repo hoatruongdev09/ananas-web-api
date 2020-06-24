@@ -15,14 +15,19 @@ namespace Ananas.Services.PostgreServices {
         public string ConnectionString { get; set; }
 
         public string TableName { get { return tableName; } }
+        public ProductService () {
 
+        }
+        public ProductService (string connectionString) {
+            ConnectionString = connectionString;
+        }
         public async Task<int> Add (ProductModel model) {
             int id = -1;
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
                 string query = $@"INSERT INTO {TableName}
-                (name, code, description, infomation, price, branch, status, image, gender)
-	            VALUES (@name, @code, @description, @infomation, @price, @branch, @status, @image, @gender) RETURNING id";
+                (name, code, description, infomation, price, branch, status, image, gender,category)
+	            VALUES (@name, @code, @description, @infomation, @price, @branch, @status, @image, @gender,@category) RETURNING id";
                 using (var cmd = new NpgsqlCommand (query, cn)) {
                     cmd.Parameters.AddWithValue ("@name", model.Name);
                     cmd.Parameters.AddWithValue ("@code", model.Code);
@@ -34,6 +39,7 @@ namespace Ananas.Services.PostgreServices {
                     cmd.Parameters.AddWithValue ("@id", model.ID);
                     cmd.Parameters.AddWithValue ("@status", model.Status);
                     cmd.Parameters.AddWithValue ("@gender", model.Gender);
+                    cmd.Parameters.AddWithValue ("@category", model.Category);
                     // cmd.Parameters.AddWithValue ("@category", model.Category);
                     // cmd.Parameters.AddWithValue ("@color", model.Color);
                     // cmd.Parameters.AddWithValue ("@collection", model.Collection);
@@ -92,6 +98,7 @@ namespace Ananas.Services.PostgreServices {
                                 Status = Convert.ToInt32 (reader["status"]),
                                 Image = Convert.ToString (reader["image"]),
                                 Gender = Convert.ToInt32 (reader["gender"]),
+                                Category = Convert.ToInt32 (reader["category"])
                                 // Color = Convert.ToInt32 (reader["color"]),
                                 // Category = Convert.ToInt32 (reader["category"]),
                                 // Collection = Convert.ToInt32 (reader["collection"]),
@@ -111,7 +118,7 @@ namespace Ananas.Services.PostgreServices {
             return model;
         }
 
-        public async Task<List<ProductModel>> GetList () {
+        public async Task<List<ProductModel>> GetListAll () {
             List<ProductModel> models = new List<ProductModel> ();
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
@@ -119,7 +126,7 @@ namespace Ananas.Services.PostgreServices {
                 using (var cmd = new NpgsqlCommand (query, cn)) {
                     try {
                         var reader = await cmd.ExecuteReaderAsync ();
-                        if (await reader.ReadAsync ()) {
+                        while (await reader.ReadAsync ()) {
                             models.Add (new ProductModel () {
                                 ID = Convert.ToInt32 (reader["id"]),
                                     Name = Convert.ToString (reader["name"]),
@@ -131,13 +138,14 @@ namespace Ananas.Services.PostgreServices {
                                     Status = Convert.ToInt32 (reader["status"]),
                                     Image = Convert.ToString (reader["image"]),
                                     Gender = Convert.ToInt32 (reader["gender"]),
-                                    // Color = Convert.ToInt32 (reader["color"]),
-                                    // Category = Convert.ToInt32 (reader["category"]),
-                                    // Collection = Convert.ToInt32 (reader["collection"]),
-                                    // Form = Convert.ToInt32 (reader["form"]),
-                                    // Material = Convert.ToInt32 (reader["material"]),
-                                    // ShoeSize = Convert.ToInt32 (reader["shoe_size"]),
-                                    // Size = Convert.ToInt32 (reader["size"]),
+                                    Category = Convert.ToInt32 (reader["category"])
+                                // Color = Convert.ToInt32 (reader["color"]),
+                                // Category = Convert.ToInt32 (reader["category"]),
+                                // Collection = Convert.ToInt32 (reader["collection"]),
+                                // Form = Convert.ToInt32 (reader["form"]),
+                                // Material = Convert.ToInt32 (reader["material"]),
+                                // ShoeSize = Convert.ToInt32 (reader["shoe_size"]),
+                                // Size = Convert.ToInt32 (reader["size"]),
                             });
                         }
                         await reader.CloseAsync ();
@@ -154,7 +162,7 @@ namespace Ananas.Services.PostgreServices {
             int rowAffect = -1;
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
-                string query = $@"UPDATE {TableName} SET name=@name, code=@code, description=@description, infomation=@infomation, price=@price, branch=@branch, status=@status, image=@image, gender=@gender WHERE id = @id";
+                string query = $@"UPDATE {TableName} SET name=@name, code=@code, description=@description, infomation=@infomation, price=@price, branch=@branch, status=@status, image=@image, gender=@gender, category=@category WHERE id = @id";
                 using (var cmd = new NpgsqlCommand (query, cn)) {
                     cmd.Parameters.AddWithValue ("@name", model.Name);
                     cmd.Parameters.AddWithValue ("@code", model.Code);
@@ -166,6 +174,7 @@ namespace Ananas.Services.PostgreServices {
                     cmd.Parameters.AddWithValue ("@id", model.ID);
                     cmd.Parameters.AddWithValue ("@status", model.Status);
                     cmd.Parameters.AddWithValue ("@gender", model.Gender);
+                    cmd.Parameters.AddWithValue ("@category", model.Category);
                     // cmd.Parameters.AddWithValue ("@category", model.Category);
                     // cmd.Parameters.AddWithValue ("@color", model.Color);
                     // cmd.Parameters.AddWithValue ("@collection", model.Collection);
@@ -183,6 +192,46 @@ namespace Ananas.Services.PostgreServices {
                 await cn.CloseAsync ();
             }
             return rowAffect;
+        }
+
+        public async Task<List<ProductModel>> GetList (int pageIndex = 0, int pageCount = 10) {
+            List<ProductModel> models = new List<ProductModel> ();
+            using (var cn = new NpgsqlConnection (ConnectionString)) {
+                await cn.OpenAsync ();
+                string query = $"SELECT * FROM {TableName} ORDER BY id OFFSET {(pageIndex - 1) * pageCount} LIMIT {pageCount}";
+                using (var cmd = new NpgsqlCommand (query, cn)) {
+                    try {
+                        var reader = await cmd.ExecuteReaderAsync ();
+                        while (await reader.ReadAsync ()) {
+                            models.Add (new ProductModel () {
+                                ID = Convert.ToInt32 (reader["id"]),
+                                    Name = Convert.ToString (reader["name"]),
+                                    Code = Convert.ToString (reader["code"]),
+                                    Description = Convert.ToString (reader["description"]),
+                                    Infomation = Convert.ToString (reader["infomation"]),
+                                    Price = Convert.ToInt32 (reader["price"]),
+                                    Branch = Convert.ToInt32 (reader["branch"]),
+                                    Status = Convert.ToInt32 (reader["status"]),
+                                    Image = Convert.ToString (reader["image"]),
+                                    Gender = Convert.ToInt32 (reader["gender"]),
+                                    Category = Convert.ToInt32 (reader["category"])
+                                // Color = Convert.ToInt32 (reader["color"]),
+                                // Category = Convert.ToInt32 (reader["category"]),
+                                // Collection = Convert.ToInt32 (reader["collection"]),
+                                // Form = Convert.ToInt32 (reader["form"]),
+                                // Material = Convert.ToInt32 (reader["material"]),
+                                // ShoeSize = Convert.ToInt32 (reader["shoe_size"]),
+                                // Size = Convert.ToInt32 (reader["size"]),
+                            });
+                        }
+                        await reader.CloseAsync ();
+                    } catch (Exception e) {
+                        throw e;
+                    }
+                }
+                await cn.CloseAsync ();
+            }
+            return models;
         }
     }
 }

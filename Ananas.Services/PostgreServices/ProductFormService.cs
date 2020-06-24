@@ -78,7 +78,7 @@ namespace Ananas.Services.PostgreServices {
             return form;
         }
 
-        public async Task<List<ProductFormModel>> GetList () {
+        public async Task<List<ProductFormModel>> GetListAll () {
             List<ProductFormModel> listForms = new List<ProductFormModel> ();
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
@@ -169,13 +169,14 @@ namespace Ananas.Services.PostgreServices {
                                     Status = Convert.ToInt32 (reader["status"]),
                                     Image = Convert.ToString (reader["image"]),
                                     Gender = Convert.ToInt32 (reader["gender"]),
-                                    // Color = Convert.ToInt32 (reader["color"]),
-                                    // Category = Convert.ToInt32 (reader["category"]),
-                                    // Collection = Convert.ToInt32 (reader["collection"]),
-                                    // Form = Convert.ToInt32 (reader["form"]),
-                                    // Material = Convert.ToInt32 (reader["material"]),
-                                    // ShoeSize = Convert.ToInt32 (reader["shoe_size"]),
-                                    // Size = Convert.ToInt32 (reader["size"]),
+                                    Category = Convert.ToInt32 (reader["category"])
+                                // Color = Convert.ToInt32 (reader["color"]),
+                                // Category = Convert.ToInt32 (reader["category"]),
+                                // Collection = Convert.ToInt32 (reader["collection"]),
+                                // Form = Convert.ToInt32 (reader["form"]),
+                                // Material = Convert.ToInt32 (reader["material"]),
+                                // ShoeSize = Convert.ToInt32 (reader["shoe_size"]),
+                                // Size = Convert.ToInt32 (reader["size"]),
                             });
                         }
                         await reader.CloseAsync ();
@@ -231,6 +232,10 @@ namespace Ananas.Services.PostgreServices {
             }
             return result;
 
+        }
+
+        public Task<List<ProductFormModel>> GetList (int pageIndex = 0, int pageCount = 10) {
+            throw new NotImplementedException ();
         }
     }
 }

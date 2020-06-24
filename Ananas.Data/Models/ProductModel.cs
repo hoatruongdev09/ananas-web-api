@@ -9,6 +9,7 @@ namespace Ananas.Data.Models {
         public int Branch { get; set; }
         public int Status { get; set; }
         public int Gender { get; set; }
+        public int Category { get; set; }
         public string Image { get; set; }
     }
 }

@@ -101,5 +101,26 @@ namespace Ananas.Utility.ImageWriter.Classes {
             }
             return result;
         }
+
+        public async Task<string> UploadImage (IFormFile file, string fileName, string place) {
+            try {
+                //for the file due to security reasons.
+                var path = Path.Combine (Directory.GetCurrentDirectory (), $"wwwroot/images/{place}", fileName);
+                using (var bits = new FileStream (path, FileMode.Create)) {
+                    await file.CopyToAsync (bits);
+                }
+            } catch (Exception e) {
+                return e.Message;
+            }
+            return fileName;
+        }
+
+        public string GenerateFileID (IFormFile file) {
+            if (!CheckIfImageFile (file)) {
+                throw new Exception ("Image valid file");
+            }
+            var extension = "." + file.FileName.Split ('.') [file.FileName.Split ('.').Length - 1];
+            return Guid.NewGuid ().ToString () + extension;
+        }
     }
 }

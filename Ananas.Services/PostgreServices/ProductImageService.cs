@@ -89,11 +89,15 @@ namespace Ananas.Services.PostgreServices {
             throw new NotImplementedException ();
         }
 
-        public Task<List<ProductImageModel>> GetList () {
+        public Task<List<ProductImageModel>> GetListAll () {
             throw new NotImplementedException ();
         }
 
         public Task<int> Update (ProductImageModel model) {
+            throw new NotImplementedException ();
+        }
+
+        public Task<List<ProductImageModel>> GetList (int pageIndex = 0, int pageCount = 10) {
             throw new NotImplementedException ();
         }
     }

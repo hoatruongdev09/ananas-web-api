@@ -5,41 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Ananas.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/baseStyle.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ananas.Web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+    <div class="header container-fluid">
+        <div class="row">
+            <ul class="menu">
+                <li><a href="#"><img src="~/icons/icon_tra_cuu_don_hang.svg" />Tra cứu đơn hàng</a></li>
+                <li><a href="#"><img src="~/icons/icon_tim_cua_hang.svg" />Tìm cửa hàng</a></li>
+                <li><a href="#"><img src="~/icons/icon_heart_header.svg" />Yêu thích</a></li>
+                <li><a href="#"><img src="~/icons/icon_dang_nhap.svg" />Đăng nhập</a></li>
+                <li><a href="#"><img src="~/icons/icon_gio_hang.svg" />Giỏ hàng (0)</a></li>
+            </ul>
+        </div>
+        <div class="row">
+           <nav class="navbar navbar-expand-lg navbar-light">
+               <div class="navbar-brand">
+                    <a href="#"><img src="~/icons/Logo_Ananas_Header.svg"/></a>
+               </div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <ul class="navbar-nav center">
+                        <li class="dropdown center">
+                            <a class="dropdown-toggle bolder" href="#">sản phẩm <span class="carret"></span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="line"></li>
+                        <li class="dropdown center">
+                            <a class="dropdown-toggle bolder" href="#">nam <span class="carret"></span></a>
+                        </li>
+                        <li class="line"></li>
+                        <li class="dropdown center">
+                            <a class="dropdown-toggle bolder" href="#">nữ <span class="carret"></span></a>
+                        </li>
+                        <li class="line"></li>
+                        <li class="dropdown center">
+                            <a class="bolder" href="#"><img src="~/icons/DiscoverYOU.svg"/></a>
                         </li>
                     </ul>
                 </div>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="hot-news-cont">
+                <div class="center hot-news-slide">
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="new-info-holder">
+                                    <a class="new-info-content" href="#">FREE SHIP HÓA ĐƠN TRÊN 800k</a> 
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="new-info-holder">
+                                    <a class="new-info-content" href="#">FREE SHIP HÓA ĐƠN TRÊN 800k</a> 
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="new-info-holder">
+                                    <a class="new-info-content" href="#">FREE SHIP HÓA ĐƠN TRÊN 800k</a> 
+                                </div>
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
+        </div>
+    </div>
+    @RenderBody()
+    @* <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
+    </div> *@
+    <div class="footer container-fluid">
+        <div class="row">
+            <div class="col-md-3 sec-search">
+                <div class="row">
+                    <div class="col-md-12">
+                        <img src="~/icons/Store.svg"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-search-shop" href="https://ananas.vn/stores">TÌM CỬA HÀNG</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - Ananas.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
         </div>
-    </footer>
+    </div>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

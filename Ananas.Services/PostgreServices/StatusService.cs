@@ -77,7 +77,7 @@ namespace Ananas.Services.PostgreServices {
             return model;
         }
 
-        public async Task<List<StatusModel>> GetList () {
+        public async Task<List<StatusModel>> GetListAll () {
             List<StatusModel> listModels = new List<StatusModel> ();;
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
@@ -117,6 +117,10 @@ namespace Ananas.Services.PostgreServices {
                 await cn.CloseAsync ();
             }
             return rowAffect;
+        }
+
+        public Task<List<StatusModel>> GetList (int pageIndex = 0, int pageCount = 10) {
+            throw new NotImplementedException ();
         }
     }
 }

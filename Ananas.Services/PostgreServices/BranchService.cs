@@ -80,7 +80,7 @@ namespace Ananas.Services.PostgreServices {
             return model;
         }
 
-        public async Task<List<BranchModel>> GetList () {
+        public async Task<List<BranchModel>> GetListAll () {
             List<BranchModel> branchModels = new List<BranchModel> ();
             using (var cn = new NpgsqlConnection (ConnectionString)) {
                 await cn.OpenAsync ();
@@ -123,6 +123,31 @@ namespace Ananas.Services.PostgreServices {
                 await cn.CloseAsync ();
             }
             return rowAffected;
+        }
+
+        public async Task<List<BranchModel>> GetList (int pageIndex = 0, int pageCount = 10) {
+            List<BranchModel> branchModels = new List<BranchModel> ();
+            using (var cn = new NpgsqlConnection (ConnectionString)) {
+                await cn.OpenAsync ();
+                string query = $"SELECT * FROM {TableName} OFFSET {(pageIndex-1)*pageCount} LIMIT {pageCount}";
+                using (var cmd = new NpgsqlCommand (query, cn)) {
+                    try {
+                        var reader = await cmd.ExecuteReaderAsync ();
+                        while (await reader.ReadAsync ()) {
+                            branchModels.Add (new BranchModel () {
+                                ID = Convert.ToInt32 (reader["id"]),
+                                    Name = Convert.ToString (reader["name"]),
+                                    Parent = Convert.ToInt32 (reader["parent"])
+                            });
+                        }
+                        await reader.CloseAsync ();
+                    } catch (Exception e) {
+                        throw e;
+                    }
+                }
+                await cn.CloseAsync ();
+            }
+            return branchModels;
         }
     }
 }
